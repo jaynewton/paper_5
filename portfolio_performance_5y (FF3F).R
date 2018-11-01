@@ -56,7 +56,7 @@ cor(ret_p[,.(ret_lh,mkt_e,smb,hml)],method="spearman")
 
 #### cumulated value (English)
 ret_plot <- melt(ret_p,id.vars="ym",
-                 measure.vars=c("exp_cum_be","exp_cum_mkt_e"),
+                 measure.vars=c("exp_cum_be","exp_cum_mkt_e","exp_cum_smb","exp_cum_hml"),
                  variable.name="strategies",value.name="cumulated_value")
 
 p <- ggplot(ret_plot,aes(x=ym,y=cumulated_value,colour=strategies,linetype=strategies))
@@ -73,18 +73,18 @@ p+geom_line()+
         legend.key.size=unit(1.7,'cm'))+
   scale_colour_grey(start=0.5,end=0,
                     guide=guide_legend(title=NULL),
-                    labels=c("Beta","MKT"))+
+                    labels=c("Beta","MKT","SMB","HML"))+
   #scale_colour_manual(values=c("red","blue","black"),
   #guide=guide_legend(title=NULL),
   #labels=c("Beta","MKT"))+
   scale_linetype_discrete(guide=guide_legend(title=NULL),
-                          labels=c("Beta","MKT"))
+                          labels=c("Beta","MKT","SMB","HML"))
 ggsave("C:/Users/Ding/Desktop/cumulated value.png",width=1.618*20,height=20,units="cm",dpi=500)
 #ggsave("C:/Users/Ding/Desktop/cumulated value.pdf",width=1.618*20,height=20,units="cm",dpi=500)
 
 #### cumulated value (Chinese)
 ret_plot <- melt(ret_p,id.vars="ym",
-                 measure.vars=c("exp_cum_be","exp_cum_mkt_e"),
+                 measure.vars=c("exp_cum_be","exp_cum_mkt_e","exp_cum_smb","exp_cum_hml"),
                  variable.name="strategies",value.name="cumulated_value")
 
 p <- ggplot(ret_plot,aes(x=ym,y=cumulated_value,colour=strategies,linetype=strategies))
@@ -101,14 +101,14 @@ p+geom_line()+
         legend.key.size=unit(1.7,'cm'))+
   scale_colour_grey(start=0.5,end=0,
                     guide=guide_legend(title=NULL),
-                    labels=c("市场贝塔","市场超额收益率"))+
+                    labels=c("市场贝塔","市场超额收益率","SMB","HML"))+
   scale_linetype_discrete(guide=guide_legend(title=NULL),
-                          labels=c("市场贝塔","市场超额收益率"))
+                          labels=c("市场贝塔","市场超额收益率","SMB","HML"))
 ggsave("C:/Users/Ding/Desktop/cumulated value.png",width=1.618*20,height=20,units="cm",dpi=500)
 
 #### cumulated return (English)
 ret_plot <- melt(ret_p,id.vars="ym",
-                 measure.vars=c("cum_be","cum_mkt_e"),
+                 measure.vars=c("cum_be","cum_mkt_e","cum_smb","cum_hml"),
                  variable.name="strategies",value.name="cumulated_return")
 
 p <- ggplot(ret_plot,aes(x=ym,y=cumulated_return,colour=strategies,linetype=strategies))
@@ -125,15 +125,15 @@ p+geom_line()+
         legend.key.size=unit(1.7,'cm'))+
   scale_colour_grey(start=0.5,end=0,
                     guide=guide_legend(title=NULL),
-                    labels=c("Beta","MKT"))+
+                    labels=c("Beta","MKT","SMB","HML"))+
   scale_linetype_discrete(guide=guide_legend(title=NULL),
-                          labels=c("Beta","MKT"))
+                          labels=c("Beta","MKT","SMB","HML"))
 ggsave("C:/Users/Ding/Desktop/cumulated return.png",width=1.618*20,height=20,units="cm",dpi=500)
 #ggsave("C:/Users/Ding/Desktop/cumulated return.pdf",width=1.618*20,height=20,units="cm",dpi=500)
 
 #### cumulated return (Chinese)
 ret_plot <- melt(ret_p,id.vars="ym",
-                 measure.vars=c("cum_be","cum_mkt_e"),
+                 measure.vars=c("cum_be","cum_mkt_e","cum_smb","cum_hml"),
                  variable.name="strategies",value.name="cumulated_return")
 
 p <- ggplot(ret_plot,aes(x=ym,y=cumulated_return,colour=strategies,linetype=strategies))
@@ -150,29 +150,42 @@ p+geom_line()+
         legend.key.size=unit(1.7,'cm'))+
   scale_colour_grey(start=0.5,end=0,
                     guide=guide_legend(title=NULL),
-                    labels=c("市场贝塔","市场超额收益率"))+
+                    labels=c("市场贝塔","市场超额收益率","SMB","HML"))+
   scale_linetype_discrete(guide=guide_legend(title=NULL),
-                          labels=c("市场贝塔","市场超额收益率"))
+                          labels=c("市场贝塔","市场超额收益率","SMB","HML"))
 ggsave("C:/Users/Ding/Desktop/cumulated return.png",width=1.618*20,height=20,units="cm",dpi=500)
 
 #### Mean Return
 ret_p[,sum(ret_lh)/nrow(ret_p)*12]
 ret_p[,sum(mkt_e)/nrow(ret_p)*12]
+ret_p[,sum(smb)/nrow(ret_p)*12]
+ret_p[,sum(hml)/nrow(ret_p)*12]
 
 #### Value at Risk(VaR) 
 ret_p[,quantile(ret_lh,0.01)]
 ret_p[,quantile(mkt_e,0.01)]
+ret_p[,quantile(smb,0.01)]
+ret_p[,quantile(hml,0.01)]
+
 ret_p[,quantile(ret_lh,0.05)]
 ret_p[,quantile(mkt_e,0.05)]
+ret_p[,quantile(smb,0.05)]
+ret_p[,quantile(hml,0.05)]
 
 #### Expected Shortfall
 ret_p[ret_lh<quantile(ret_lh,0.01),mean(ret_lh)]
 ret_p[mkt_e<quantile(mkt_e,0.01),mean(mkt_e)]
+ret_p[smb<quantile(smb,0.01),mean(smb)]
+ret_p[hml<quantile(hml,0.01),mean(hml)]
+
 ret_p[ret_lh<quantile(ret_lh,0.05),mean(ret_lh)]
 ret_p[mkt_e<quantile(mkt_e,0.05),mean(mkt_e)]
+ret_p[smb<quantile(smb,0.05),mean(smb)]
+ret_p[hml<quantile(hml,0.05),mean(hml)]
 
 #### Sharpe Ratio (Yearly)
 ret_p[,mean(ret_lh)/sd(ret_lh)]*sqrt(nrow(ret_p)/nrow(ret_p)*12) 
 ret_p[,mean(mkt_e)/sd(mkt_e)]*sqrt(nrow(ret_p)/nrow(ret_p)*12)
-
+ret_p[,mean(smb)/sd(smb)]*sqrt(nrow(ret_p)/nrow(ret_p)*12) 
+ret_p[,mean(hml)/sd(hml)]*sqrt(nrow(ret_p)/nrow(ret_p)*12)
 

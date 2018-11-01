@@ -23,20 +23,16 @@ FUN_BE <- function(da) {
                    t(da[,c(2,3)]) %*% da[,1])[2,1]))
 }
 da_beta[,be:=rollapply(as.matrix(.SD),60,FUN = FUN_BE,by=1,
-                       by.column = FALSE,align = "right", fill = NA),
+                       by.column = FALSE,align = "left", fill = NA),
         by=SecCode,.SDcols=c("ret_e_tm","intercept","mkt_e")]
 now()
 
 da_beta <- na.omit(da_beta)
 da_beta <- da_beta[order(ym,SecCode),]
 
-#### Used for Other Papers
-#da_beta_5y <- da_beta[,.(ym=ym+months(1),SecCode,be)]
-# Note: We use past 60-month data (this month is not included) to estimate beta.
-# That's why we move forward one month.
-
-#### Used for This Papers
 da_beta_5y <- da_beta[ym>=ymd("2000-1-1"),.(ym,SecCode,be)] # make full use of renewed information
 
-save(da_beta_5y,file="C:/Users/Ding/Desktop/da_beta_5y.RData")
+da_beta_post_5y <- copy(da_beta_5y)
+
+save(da_beta_post_5y,file="C:/Users/Ding/Desktop/da_beta_post_5y.RData")
 

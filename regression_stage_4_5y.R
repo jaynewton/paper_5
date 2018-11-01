@@ -42,7 +42,7 @@ da_gamma_core_m <- data.table(ym=ymd(names(summary(lm_0)$coefficients[,,2][,1]))
 
 ####  
 lm_1 <- lmList(be ~ max_ret | ym , data=da_m_lm)
-da_vari_m <- da_m_lm[,.(ym,ret_e,be,candidate=be)]
+da_vari_m <- da_m_lm[,.(ym,ret_e,be,candidate=max_ret)]
 FUN_DECOMPOSITION(lm_1)
 
 lm_2 <- lmList(be ~ size | ym , data=da_m_lm)

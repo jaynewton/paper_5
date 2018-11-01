@@ -1,4 +1,12 @@
 #################################
+#### Descriptive Statistics (Only Beta)
+load("F:/我的论文/第五篇/主代码/beta anomaly/monthly data in five years/RData/da_beta_5y.RData")
+
+ds_1 <- describe(da_beta_5y[,.(be)])[,c("mean","median","sd","skew","kurtosis","min","max")]
+ds_1[,"kurtosis"] <- ds_1[,"kurtosis"]+3
+#ds_1
+format(ds_1,digits=5)
+
 #### Descriptive Statistics (Except Realized Variables)
 load("F:/我的论文/第五篇/RData/da_all_m.RData")
 #load("F:/我的论文/第五篇/RData/da_beta_5y.RData")
@@ -36,8 +44,8 @@ da_m <- merge(da_m,da_realized_m,keyby=c("ym","SecCode"))
 cor(da_m[,.(be,rvol,rsk)],method="pearson")
 #cor(da_m[,.(be,rvol,rsk)],method="spearman")
 
-ds_2 <- describe(da_m[,.(be,rvol,rsk)])[,c("mean","median","sd","skew","kurtosis","min","max")]
-ds_2[,"kurtosis"] <- ds_2[,"kurtosis"]+3
-#ds_2
-format(ds_2,digits=3)
+ds_3 <- describe(da_m[,.(be,rvol,rsk)])[,c("mean","median","sd","skew","kurtosis","min","max")]
+ds_3[,"kurtosis"] <- ds_3[,"kurtosis"]+3
+#ds_3
+format(ds_3,digits=3)
 
